@@ -7,18 +7,6 @@ public class MyLinkedList<T> implements MyLinkedListInterface<T> {
     private Node<T> tail;
     private int size;
 
-    private static class Node<T> {
-        private T value;
-        private Node<T> next;
-        private Node<T> prev;
-
-        public Node(Node<T> prev, T value, Node<T> next) {
-            this.prev = prev;
-            this.value = value;
-            this.next = next;
-        }
-    }
-
     @Override
     public void add(T value) {
         Node<T> last = tail;
@@ -44,7 +32,7 @@ public class MyLinkedList<T> implements MyLinkedListInterface<T> {
 
         Node<T> current = getNode(index);
         Node<T> prev = current.prev;
-        Node newNode = new Node(prev, value, current);
+        Node<T> newNode = new Node<>(prev, value, current);
 
         current.prev = newNode;
         if (prev == null) {
@@ -84,7 +72,7 @@ public class MyLinkedList<T> implements MyLinkedListInterface<T> {
     public boolean remove(T object) {
         Node<T> current = head;
         while (current != null) {
-            if ((object == null ? current.value == null : object.equals(current.value))) {
+            if (object == null ? current.value == null : object.equals(current.value)) {
                 unlink(current);
                 return true;
             }
@@ -144,15 +132,27 @@ public class MyLinkedList<T> implements MyLinkedListInterface<T> {
         }
     }
 
-    public void checkIndex(int index) {
+    private void checkIndex(int index) {
         if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException("Invalid index: " + index + " for size: " + size);
         }
     }
 
-    public void checkIndexForAdd(int index) {
+    private void checkIndexForAdd(int index) {
         if (index < 0 || index > size) {
             throw new IndexOutOfBoundsException("Invalid index: " + index + " for size: " + size);
+        }
+    }
+
+    private static class Node<T> {
+        private T value;
+        private Node<T> next;
+        private Node<T> prev;
+
+        public Node(Node<T> prev, T value, Node<T> next) {
+            this.prev = prev;
+            this.value = value;
+            this.next = next;
         }
     }
 }
